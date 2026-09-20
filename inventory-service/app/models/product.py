@@ -27,4 +27,5 @@ class GetProductsResponseModel(BaseModel):
     products: list[ProductResponseModel]
     limit: int
     offset: int
+    
 

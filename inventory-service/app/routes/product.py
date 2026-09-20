@@ -7,6 +7,7 @@ from app.models.product import (
     GetProductsRequestModel,
     GetProductsResponseModel,
     ProductResponseModel,
+    ReserveStockRequestModel
 )
 
 router = APIRouter()
@@ -41,5 +42,10 @@ async def get_product_by_id(id: int, db: AsyncSession = Depends(get_db)):
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.post("/reserve")
-async def reserve_stock():
-    pass
+async def reserve_stock(req: ReserveStockRequestModel, db: AsyncSession = Depends(get_db)):
+    try:
+        service = ProductService(db)
+        return await service.reserve_stock(req)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+        

@@ -4,6 +4,7 @@ from app.models.product import (
     CreateProductRequestModel,
     GetProductsRequestModel,
     GetProductsResponseModel,
+    ReserveStockRequestModel
 )
 
 class ProductService:
@@ -29,6 +30,22 @@ class ProductService:
         try:
             product = await self.repo.get_product_by_id(id)
             return product
+        except Exception as e:
+            raise e
+
+    async def reserve_stock(self, data: ReserveStockRequestModel):
+        try:
+            product_stock = await self.repo.get_product_count(data.product_id)
+            if(product_stock < data.quantity):
+                raise HTTPException(
+                    status_code=400,
+                    detail="Insufficient stock"
+                )
+            else:
+                await self.repo.reserve_stock(data)
+                return {
+                    "message": "Stock reserved successfully"
+                }
         except Exception as e:
             raise e
 
