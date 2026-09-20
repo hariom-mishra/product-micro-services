@@ -5,11 +5,11 @@ from app.core.settings import settings
 
 db_engine = create_async_engine(settings.DB_URL)
 
-db_session = async_sessionmaker(db_engine)
+db_session = async_sessionmaker(db_engine, expire_on_commit=False)
 
 async def get_db():
     async with db_session() as db:
-        yield
+        yield db
 
 class Base(DeclarativeBase):
     pass

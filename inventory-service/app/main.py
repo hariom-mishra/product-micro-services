@@ -1,15 +1,18 @@
 from fastapi import FastAPI
 from app.core.db import db_engine, get_db, Base
 from contextlib import asynccontextmanager
+from app.routes.product import router as product_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     async with db_engine.begin() as conn:
-        conn.run_sync(Base.metadata.create_all)
+        await conn.run_sync(Base.metadata.create_all)
     yield
-    db_engine.dispose()
+    await db_engine.dispose()
 
-app = FastAPI()
+app = FastAPI(lifespan=lifespan)
+
+app.include_router(product_router, prefix="/products", tags=["product"])
 
 @app.get("/")
 def default():

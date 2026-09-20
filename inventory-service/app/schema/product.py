@@ -5,7 +5,7 @@ from sqlalchemy import String, Float, Integer
 class Product(Base):
     __tablename__ = "product"
 
-    id: Mapped[int] = mapped_column(primay_key=True)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column(String(100), nullable=False)
     price: Mapped[float] = mapped_column(Float)
-    stocks: Mapped[int] = mapeed_column(Integer)
+    stock: Mapped[int] = mapped_column(Integer)
