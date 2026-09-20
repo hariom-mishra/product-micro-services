@@ -1,3 +1,4 @@
+from fastapi import HTTPException
 from app.repository.product import ProductRepo
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.models.product import (
